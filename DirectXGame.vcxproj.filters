@@ -121,6 +121,18 @@
     <Filter Include="ソース ファイル\Project\Game\Clear">
       <UniqueIdentifier>{dd09c5ee-3dce-4a7a-9522-ff77f1ba72fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Project\GameObject\RailCamera">
+      <UniqueIdentifier>{aa7d2646-7097-4013-89ff-9906a7fcd7ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Project\GameObject\RailCamera">
+      <UniqueIdentifier>{214b5e2f-fdab-4bef-8774-dd4db001d475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Project\GameObject\Players">
+      <UniqueIdentifier>{9141244a-7782-4620-bed3-cce502f94f17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Project\GameObject\Players">
+      <UniqueIdentifier>{de22999c-4f97-4bd7-b403-571593c92158}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -236,6 +248,15 @@
     </ClCompile>
     <ClCompile Include="Project\Game\TitleScene\TitleScene.cpp">
       <Filter>ソース ファイル\Project\Game\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameObject\RailCamera\RailCamera.cpp">
+      <Filter>ソース ファイル\Project\GameObject\RailCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameObject\Players\Player.cpp">
+      <Filter>ソース ファイル\Project\GameObject\Players</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameObject\Players\PlayerBullet.cpp">
+      <Filter>ソース ファイル\Project\GameObject\Players</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +388,18 @@
     </ClInclude>
     <ClInclude Include="Project\Game\TitleScene\TitleScene.h">
       <Filter>ヘッダー ファイル\Project\Game\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameObject\RailCamera\RailCamera.h">
+      <Filter>ヘッダー ファイル\Project\GameObject\RailCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameObject\Players\PlayerBullet.h">
+      <Filter>ヘッダー ファイル\Project\GameObject\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameObject\Players\Player.h">
+      <Filter>ヘッダー ファイル\Project\GameObject\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameObject\Players\UI.h">
+      <Filter>ヘッダー ファイル\Project\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -146,6 +146,10 @@ private:
 	/// <returns></returns>
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
 
+	public:
+		// ワールド座標
+		WorldTransform worldTransform;
+
 private:
 	//デバイス
 	static ID3D12Device* sDevice_;
