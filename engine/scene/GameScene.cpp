@@ -7,7 +7,7 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 
 	// 敵の出現情報
-	LoadEnemyPopData();
+	LoadCSV();
 
 	// カメラ
 	viewProjection_.Initialize();
@@ -65,7 +65,7 @@ void GameScene::Update() {
 	// カメラ
 	viewProjection_.UpdateMatrix();
 	// 敵の出現するタイミングと座標
-	UpdateEnemyPopCommands();
+	UpdateEnemyPop();
 
 	// enemyの更新
 	for (Enemy* enemy : enemy_) {
@@ -169,7 +169,7 @@ void GameScene::Finalize() {
 	viewProjection_.constBuff_.ReleaseAndGetAddressOf();
 }
 
-void GameScene::SpawnEnemy(Vector3 pos) {
+void GameScene::EnemySpaen(Vector3 pos) {
 	Enemy* enemy = new Enemy();
 	// 自機の位置をもらう
 	enemy->SetPlayer(player_);
@@ -181,7 +181,7 @@ void GameScene::SpawnEnemy(Vector3 pos) {
 	enemy_.push_back(enemy);
 }
 
-void GameScene::LoadEnemyPopData() {
+void GameScene::LoadCSV() {
 	// ファイルを開く
 	std::ifstream file;
 	file.open("engine/resources/csv/enemyPop.csv");
@@ -193,13 +193,13 @@ void GameScene::LoadEnemyPopData() {
 	file.close();
 }
 
-void GameScene::UpdateEnemyPopCommands() {
+void GameScene::UpdateEnemyPop() {
 	// 待機処理
-	if (isWait_) {
+	if (itsWait_) {
 		waitTime_--;
 		if (waitTime_ <= 0) {
 			// 待機完了
-			isWait_ = false;
+			itsWait_ = false;
 		}
 		return;
 	}
@@ -235,7 +235,7 @@ void GameScene::UpdateEnemyPopCommands() {
 			float z = (float)std::atof(word.c_str());
 
 			// 敵を発生させる
-			SpawnEnemy(Vector3(x, y, z));
+			EnemySpaen(Vector3(x, y, z));
 		}
 		
 		// WAITコマンド
@@ -246,7 +246,7 @@ void GameScene::UpdateEnemyPopCommands() {
 			int32_t waitTime = atoi(word.c_str());
 
 			// 待ち時間
-			isWait_ = true;
+			itsWait_ = true;
 			waitTime_ = waitTime;
 
 			// コマンドループを抜ける
@@ -261,12 +261,12 @@ void GameScene::UpdateEnemyPopCommands() {
 	}
 }
 
-void GameScene::AddPlayerBullet(PlayerBullet* playerBullet) {
+void GameScene::PlayerBulletShot(PlayerBullet* playerBullet) {
 	// リストに登録する
 	playerBullets_.push_back(playerBullet);
 }
 
-void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
+void GameScene::EnemyBulletShot(EnemyBullet* enemyBullet) {
 	// リストに登録する
 	enemyBullets_.push_back(enemyBullet);
 }

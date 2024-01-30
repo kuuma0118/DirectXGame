@@ -94,7 +94,7 @@ void Enemy::Fire() {
 	newBullet->SetPlayer(player_);
 
 	// 弾を登録
-	gameScene_->AddEnemyBullet(newBullet);
+	gameScene_->EnemyBulletShot(newBullet);
 }
 
 void Enemy::OnCollision() {

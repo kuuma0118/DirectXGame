@@ -198,7 +198,7 @@ void Player::Attack() {
 		newBullet->Initialize(worldPos, velocity);
 
 		// 弾を登録
-		gameScene_->AddPlayerBullet(newBullet);
+		gameScene_->PlayerBulletShot(newBullet);
 	}
 }
 

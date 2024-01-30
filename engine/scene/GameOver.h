@@ -21,7 +21,7 @@ private:
 	Input* input_;
 
 	// UI
-	Sprite* UISprite_[2];
+	Sprite* UI_[2];
 	// 背景
 	Sprite* backGround_;
 };

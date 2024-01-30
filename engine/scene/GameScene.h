@@ -49,17 +49,17 @@ public:
 	const std::list<EnemyBullet*>& GetEnemyBullets() const { return enemyBullets_; }
 
 	// 敵を発生させる
-	void SpawnEnemy(Vector3 pos);
+	void EnemySpaen(Vector3 pos);
 
 	// CSVを読み込む
-	void LoadEnemyPopData();
+	void LoadCSV();
 
 	// 
-	void UpdateEnemyPopCommands();
+	void UpdateEnemyPop();
 
-	void AddPlayerBullet(PlayerBullet* playerBullet);
+	void PlayerBulletShot(PlayerBullet* playerBullet);
 
-	void AddEnemyBullet(EnemyBullet* enemyBullet);
+	void EnemyBulletShot(EnemyBullet* enemyBullet);
 private:
 	// 基本機能
 	Input* input_;
@@ -91,8 +91,8 @@ private:
 
 	// 敵の発生時間や座標などのCSVファイル
 	std::stringstream enemyPopCommands_;
-	// 敵が発生待機中か
-	bool isWait_ = false;
+	// 敵が発生待機中
+	bool itsWait_ = false;
 	// 敵が発生するまでの時間
 	int32_t waitTime_ = 0;
 
