@@ -65,13 +65,13 @@ void Player::Update(const ViewProjection& viewProjection) {
 	}
 
 	// 移動限界座標
-	const Vector2 kMoveLimit = { 40 - 10, 30 - 15 };
+	const Vector2 kLimitMove = { 40 - 10, 30 - 15 };
 
 	// 範囲を超えない処理
-	model_->worldTransform.translation_.x = max(model_->worldTransform.translation_.x, -kMoveLimit.x);
-	model_->worldTransform.translation_.x = min(model_->worldTransform.translation_.x, kMoveLimit.x);
-	model_->worldTransform.translation_.y = max(model_->worldTransform.translation_.y, -kMoveLimit.y);
-	model_->worldTransform.translation_.y = min(model_->worldTransform.translation_.y, kMoveLimit.y);
+	model_->worldTransform.translation_.x = max(model_->worldTransform.translation_.x, -kLimitMove.x);
+	model_->worldTransform.translation_.x = min(model_->worldTransform.translation_.x, kLimitMove.x);
+	model_->worldTransform.translation_.y = max(model_->worldTransform.translation_.y, -kLimitMove.y);
+	model_->worldTransform.translation_.y = min(model_->worldTransform.translation_.y, kLimitMove.y);
 
 	// 座標移動
 	model_->worldTransform.translation_.x += move.x;
@@ -139,6 +139,35 @@ void Player::Update(const ViewProjection& viewProjection) {
 	worldTransform3DReticle_.translation_.z = posNear.z - mouseDirection.z * kDistanceTestObject;
 
 	worldTransform3DReticle_.UpdateMatrix();
+}
+
+void Player::OnCollision() {}
+
+Vector3 Player::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos{};
+	// ワールド行列の平行移動成分を取得
+	worldPos.x = model_->worldTransform.matWorld_.m[3][0];
+	worldPos.y = model_->worldTransform.matWorld_.m[3][1];
+	worldPos.z = model_->worldTransform.matWorld_.m[3][2];
+
+	return worldPos;
+}
+
+Vector3 Player::GetWorldReticlePosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得
+	worldPos.x = worldTransform3DReticle_.matWorld_.m[3][0];
+	worldPos.y = worldTransform3DReticle_.matWorld_.m[3][1];
+	worldPos.z = worldTransform3DReticle_.matWorld_.m[3][2];
+
+	return worldPos;
+}
+
+void Player::SetParent(const WorldTransform* parent) {
+	// 親子関係を結ぶ
+	model_->worldTransform.parent_ = parent;
 }
 
 // Drawの関数定義
@@ -225,7 +254,7 @@ void Player::Deploy3DReticle() {
 
 void Player::Deploy2DReticle(const ViewProjection& viewProjection) {
 	// 3Dレティクルのワールド座標を取得
-	Vector3 positionReticle = GetWorld3DReticlePosition();
+	Vector3 positionReticle = GetWorldReticlePosition();
 	// ビューポート行列
 	matViewport_ =
 		MakeViewportMatrix(0, 0, (float)WinApp::kClientWidth_, (float)WinApp::kClientHeight_, 0, 1);
@@ -239,31 +268,3 @@ void Player::Deploy2DReticle(const ViewProjection& viewProjection) {
 	sprite2DReticle_->SetPos(Vector2(positionReticle.x, positionReticle.y));
 }
 
-void Player::OnCollision() {}
-
-Vector3 Player::GetWorldPosition() {
-	// ワールド座標を入れる変数
-	Vector3 worldPos{};
-	// ワールド行列の平行移動成分を取得
-	worldPos.x = model_->worldTransform.matWorld_.m[3][0];
-	worldPos.y = model_->worldTransform.matWorld_.m[3][1];
-	worldPos.z = model_->worldTransform.matWorld_.m[3][2];
-
-	return worldPos;
-}
-
-Vector3 Player::GetWorld3DReticlePosition() {
-	// ワールド座標を入れる変数
-	Vector3 worldPos;
-	// ワールド行列の平行移動成分を取得
-	worldPos.x = worldTransform3DReticle_.matWorld_.m[3][0];
-	worldPos.y = worldTransform3DReticle_.matWorld_.m[3][1];
-	worldPos.z = worldTransform3DReticle_.matWorld_.m[3][2];
-
-	return worldPos;
-}
-
-void Player::SetParent(const WorldTransform* parent) {
-	// 親子関係を結ぶ
-	model_->worldTransform.parent_ = parent;
-}

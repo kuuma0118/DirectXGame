@@ -49,11 +49,6 @@ void PlayerBullet::Update() {
 	}
 }
 
-void PlayerBullet::Draw(const ViewProjection& viewProjection) {
-	// モデルの描画
-	model_->Draw(viewProjection, bulletTexture_);
-}
-
 void PlayerBullet::OnCollision() {
 	isDead_ = true;
 }
@@ -67,4 +62,9 @@ Vector3 PlayerBullet::GetWorldPosition() {
 	worldPos.z = model_->worldTransform.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void PlayerBullet::Draw(const ViewProjection& viewProjection) {
+	// モデルの描画
+	model_->Draw(viewProjection, bulletTexture_);
 }

@@ -69,7 +69,7 @@ public:
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
 	// レティクルの座標
-	Vector3 GetWorld3DReticlePosition();
+	Vector3 GetWorldReticlePosition();
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 

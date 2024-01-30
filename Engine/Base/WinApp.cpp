@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <string>
 #include <format>
-
 #include "../../externals/ImGui/imgui.h"
 #include "../../externals/ImGui/imgui_impl_dx12.h"
 #include "../../externals/ImGui/imgui_impl_win32.h"
