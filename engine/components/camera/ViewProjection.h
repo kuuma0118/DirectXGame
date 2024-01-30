@@ -6,9 +6,9 @@
 
 // 定数バッファ用データ構造体
 struct ConstBufferDataViewProjection {
-	Matrix4x4 view;       // ワールド → ビュー変換行列
-	Matrix4x4 projection; // ビュー → プロジェクション変換行列
-	Vector3 cameraPos;    // カメラ座標（ワールド座標）
+	Matrix4x4 view;       
+	Matrix4x4 projection; 
+	Vector3 cameraPos;    
 };
 
 struct ViewProjection{

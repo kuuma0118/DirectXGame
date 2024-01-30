@@ -7,7 +7,6 @@
 #include <format>
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
-
 #include "../../externals/ImGui/imgui.h"
 #include "../../externals/ImGui/imgui_impl_dx12.h"
 #include "../../externals/ImGui/imgui_impl_win32.h"
@@ -75,10 +74,7 @@ void DirectXCommon::PreDraw() {
 	backBufferIndex_ = swapChain_.Get()->GetCurrentBackBufferIndex();
 
 #pragma region TransitionBarrierを張る
-
-	// TransitionBarrierの設定
-
-	// 今回の場入りはTransition
+	
 	barrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	// Noneにしておく
 	barrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
@@ -113,8 +109,6 @@ void DirectXCommon::PostDraw() {
 	HRESULT hr;
 #pragma region 画面表示できるようにする
 
-	// 画面に描く処理はすべて終わり、画面に映すので、状態を遷移
-	// 今回はRenderTargetからPresentにする
 	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 	// TransitionBarrierを張る
@@ -122,7 +116,6 @@ void DirectXCommon::PostDraw() {
 
 #pragma endregion
 
-	// コマンドリストの内容を確定させる。すべてのコマンドを積んでからCloseすること
 	hr = commandList_.Get()->Close();
 	assert(SUCCEEDED(hr));
 
@@ -138,15 +131,12 @@ void DirectXCommon::PostDraw() {
 
 	// fenceの値を更新
 	fenceValue_++;
-	// GPUがここまでたどり着いたときに、Fenceの値を指定した値に代入するようにSignalを送る
 	commandQueue_.Get()->Signal(fence_.Get(), fenceValue_);
 
 #pragma endregion
 
 #pragma region Fenceの値を確認してGPUを待つ
 
-	// Fenceの値が指定したSignal値にたどり着い散るか確認する
-	// GetComplatedValueの初期値はfence作成時に渡した初期値
 	if (fence_.Get()->GetCompletedValue() < fenceValue_) {
 		// 指定したSignalにたどり着いてないので、たどり着くまで待つようにイベントを設定する
 		fence_.Get()->SetEventOnCompletion(fenceValue_, fenceEvent_);
@@ -243,8 +233,7 @@ void DirectXCommon::StopError() {
 
 		// 抑制するメッセージのID
 		D3D12_MESSAGE_ID denyIds[] = {
-			// Window11でのDXGIデバッグレイヤーとDX12デバッグレイヤーの相互作用バグによるエラーメッセージ
-			// hppts://stackoverflow.com/questions/69805245/directx-12-application-is-crashing-in-windows-11
+
 			D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE
 		};
 		// 抑制するレベル
@@ -376,12 +365,12 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureR
 	// Resourceの生成
 	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
 	HRESULT hr = device_->CreateCommittedResource(
-		&heapProperties,				  // Heapの設定
-		D3D12_HEAP_FLAG_NONE,			  // Heapの特殊な設定。特になし
-		&resourceDesc,					  // Resourceの設定
-		D3D12_RESOURCE_STATE_DEPTH_WRITE, // 深度値を書き込む状態にしておく
-		&depthClearValue,				  // Clear最適値
-		IID_PPV_ARGS(resource.GetAddressOf())			  // 作成するResourceポインタへのポインタ
+		&heapProperties,				 
+		D3D12_HEAP_FLAG_NONE,			
+		&resourceDesc,					  
+		D3D12_RESOURCE_STATE_DEPTH_WRITE, 
+		&depthClearValue,				  
+		IID_PPV_ARGS(resource.GetAddressOf())			 
 	);
 
 	assert(SUCCEEDED(hr));
@@ -426,12 +415,11 @@ void DirectXCommon::SettingDepthStencilState() {
 void DirectXCommon::CreateRTV() {
 	const uint32_t descriptorSizeRTV = device_.Get()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	// RTVの設定
-	rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 出力結果をSRGBに変換して書き込む
-	rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; // 2Dテクスチャとして書き込む
+	rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; 
+	rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; 
 	// ディスクリプタの先頭を取得する
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle = GetCPUDescriptorHandle(rtvDescriptorHeap_.Get(), descriptorSizeRTV, 0);//rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
-	// RTVを2つ作るのでディスクリプタを2つ用意
-	// まず一つ目を作る一つ目は最初のところに作る。作る場所をこちらで指定してあげる必要がある
+
 	rtvHandles_[0] = rtvStartHandle;
 	device_.Get()->CreateRenderTargetView(swapChainResources_[0].Get(), &rtvDesc_, rtvHandles_[0]);
 	// 二つ目のディスクリプタハンドルを得る(自力で)

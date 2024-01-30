@@ -12,7 +12,7 @@ GameManager::GameManager() {
 
 void GameManager::Initialize() {
 	// タイトル名を入力
-	const char kWindowTitle[] = "LE2B_23__Remake";
+	const char kWindowTitle[] = "LE2B_23_Remake";
 	// タイトルバーの変換
 	auto&& titleString = ConvertString(kWindowTitle);
 
@@ -35,12 +35,7 @@ void GameManager::Initialize() {
 	// ImGuiの初期化
 	imGuiManager_ = new ImGuiManager();
 	imGuiManager_->Initialize(winApp_->GetHwnd());
-	// ブローバル変数の読み込み
-	//GlobalVariables::GetInstance()->LoadFiles();
-	// ポストエフェクト
-	//postEffect_ = new PostEffect();
-	//postEffect_->Initialize();
-
+	
 	/// Components
 	// 入力(キーボードとゲームパッド)
 	input_ = Input::GetInstance();
@@ -54,18 +49,7 @@ void GameManager::Initialize() {
 	// スポットライト
 	spotLight_ = SpotLight::GetInstance();
 	spotLight_->Initialize();
-	//// Audioの初期化
-	//audio_ = Audio::GetInstance();
-	//HRESULT result;
-	//// Xaudio2エンジンのインスタンスを生成
-	//result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
-	//// マスターボイスを生成
-	//result = xAudio2_->CreateMasteringVoice(&masterVoice_);
-	//// 音声読み込み
-	//soundData1_ = audio_->SoundLoadWave("resources/fanfare.wav");
-	//// 音声再生
-	//audio_->SoundPlayWave(xAudio2_.Get(), soundData1_);
-
+	
 	//初期シーンの設定
 	sceneNum_ = TITLE_SCENE;
 	// シーンごとの初期化
@@ -103,21 +87,8 @@ void GameManager::Run() {
 			/// 
 			sceneArr_[sceneNum_]->Update();
 
-			// ImGuiのパラメータを入れている
-			//ImGuiAdjustParameter();
-
-			// FPSカウンターの表示
-		/*	ImGui::Begin("Control panel");
-			ImGui::Text("Frame rate: %6.2f fps", ImGui::GetIO().Framerate);
-			ImGui::End();*/
-
-			///
-			/// 描画処理
-			/// 
-			//postEffect_->PreDrawScene();		
+			
 			sceneArr_[sceneNum_]->Draw();
-			//postEffect_->Draw();
-			//postEffect_->PostDrawScene();
 			
 			// 描画後の処理
 			EndFrame();
@@ -136,8 +107,7 @@ void GameManager::BeginFrame() {
 	pipelineManager_->PreDraw();
 	// ImGui
 	imGuiManager_->PreDraw();
-	// グローバル変数の更新
-	//GlobalVariables::GetInstance()->Update();
+	
 }
 
 void GameManager::EndFrame() {

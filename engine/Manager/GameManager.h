@@ -31,9 +31,7 @@
 class GameManager
 {	
 public:
-	///
-	/// Default Method
-	/// 
+	
 	// コンストラクタ
 	GameManager();
 
@@ -49,9 +47,7 @@ public:
 	// 解放処理
 	void Finalize();
 
-	///
-	/// user method
-	///
+	
 	// ループ処理
 	void Run();
 

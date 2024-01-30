@@ -1,12 +1,10 @@
 #pragma once
 #include "DirectXCommon.h"
 #include "WinApp.h"
-
 #include <stdint.h>
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <dxgidebug.h>
-
 #include "../../externals/ImGui/imgui.h"
 #include "../../externals/ImGui/imgui_impl_dx12.h"
 #include "../../externals/ImGui/imgui_impl_win32.h"
