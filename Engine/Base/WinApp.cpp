@@ -1,97 +1,111 @@
 #include "WinApp.h"
-#pragma comment(lib,"winmm.lib")
+#include <Windows.h>
+#include <cstdint>
+#include <string>
+#include <format>
+
+#include "../../externals/ImGui/imgui.h"
+#include "../../externals/ImGui/imgui_impl_dx12.h"
+#include "../../externals/ImGui/imgui_impl_win32.h"
+#include <wrl.h>
+
+#pragma comment(lib, "winmm.lib")
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 WinApp* WinApp::GetInstance() {
 	static WinApp instance;
+
 	return &instance;
 }
 
-
+// ウィンドウプロシージャ
 LRESULT CALLBACK WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-	//ImGuiにメッセージを伝える
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
 		return true;
 	}
-
-	//メッセージに応じてゲーム固有の処理を行う
+	// メッセージに応じてゲーム固有の処理を行う
 	switch (msg) {
-		//ウィンドウが破棄された
+		// ウィンドウが破棄された
 	case WM_DESTROY:
-		//OSに対して、アプリの終了を伝える
+		// OSに対して、アプリの終了を伝える
 		PostQuitMessage(0);
 		return 0;
 	}
 
-	//標準のメッセージ処理を行う
+	// 標準のメッセージ処理を行う
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-
-void WinApp::CreateGameWindow(const wchar_t* title, int32_t clientWidth, int32_t clientHeight) {
-	//COM初期化
-	HRESULT hr = CoInitializeEx(0, COINIT_MULTITHREADED);
-
-	//システムタイマーの分解能をあげる
-	timeBeginPeriod(1);
-
-	//ウィンドウプロシージャ
+// ウィンドウの生成
+void WinApp::CreateGameWindow(const wchar_t* title, int32_t kClientWidth, int32_t kClientHeight) {
+	kClientWidth_ = kClientWidth;
+	kClientHeight_ = kClientHeight;
+	// ウィンドウプロシージャ
 	wc_.lpfnWndProc = WindowProc;
-	//ウィンドウクラス名
+	// ウィンドウクラス名
 	wc_.lpszClassName = L"CG2WindowClass";
-	//インスタンスハンドル
+	// インスタンスハンドル
 	wc_.hInstance = GetModuleHandle(nullptr);
-	//カーソル
+	// カーソル
 	wc_.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	//ウィンドウクラスを登録する
+	// ウィンドウクラスを登録する
 	RegisterClass(&wc_);
 
+	RECT wrc;
+	// ウィンドウサイズを表す構造体にクライアント領域を入れる
+	wrc = { 0, 0, kClientWidth, kClientHeight };
 
-	//ウィンドウサイズを表す構造体にクライアント領域を入れる
-	wrc_ = { 0,0,clientWidth,clientHeight };
-	//クライアント領域をもとに実際のサイズにwrcを変更してもらう
-	AdjustWindowRect(&wrc_, WS_OVERLAPPEDWINDOW, false);
-
-
-	//ウィンドウの作成
+	// クライアント領域をもとに2サイズにWRCを変更してもらう
+	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 	hwnd_ = CreateWindow(
-		wc_.lpszClassName,//利用するクラス名
-		title,//タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,//ウィンドウスタイル
-		CW_USEDEFAULT,//表示X座標
-		CW_USEDEFAULT,//表示Y座標
-		wrc_.right - wrc_.left,//ウィンドウの横幅
-		wrc_.bottom - wrc_.top,//ウィンドウの縦幅
-		nullptr,//親ウィンドウハンドル
-		nullptr,//メニューハンドル
-		wc_.hInstance,//インスタンスハンドル
-		nullptr);
-	//ウィンドウを表示する
+		wc_.lpszClassName,
+		title,
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		wrc.right - wrc.left,
+		wrc.bottom - wrc.top,
+		nullptr,
+		nullptr,
+		wc_.hInstance,
+		nullptr
+	);
+	// ウィンドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);
 }
 
-
-void WinApp::CloseGameWindow() {
-	//ゲームウィンドウを閉じる
-	CloseWindow(hwnd_);
-	//COM終了
-	CoUninitialize();
+void WinApp::DebugLayer() {
+#ifdef _DEBUG
+	Microsoft::WRL::ComPtr<ID3D12Debug1> debugController = nullptr;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
+		// デバッグレイヤーを有効化する
+		debugController->EnableDebugLayer();
+		// さらにGPU側でもチェックを行うようにする
+		debugController->SetEnableGPUBasedValidation(TRUE);
+	}
+#endif
 }
 
+// Windowsの初期化
+void WinApp::Initialize(const wchar_t* title, int32_t kClientWidth, int32_t kClientHeight) {
+	// システムタイマーの分解能を上げる
+	timeBeginPeriod(1);
 
-bool WinApp::ProcessMessage() {
-	//メッセージ
-	MSG msg{};
-
-	//Windowにメッセージが来てたら最優先で処理させる
-	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-
-	//終了メッセージが来たらループを抜ける
-	if (msg.message == WM_QUIT) {
-		return true;
-	}
-
-	return false;
+	CreateGameWindow(title, kClientWidth, kClientHeight);
+	DebugLayer();
 }
+
+// 出力ウィンドウに文字を出す
+void WinApp::Log(const std::string& message) {
+	OutputDebugStringA(message.c_str());
+}
+
+#pragma region メンバ変数
+
+// ウィンドウクラス登録用
+
+int32_t WinApp::kClientWidth_;
+int32_t WinApp::kClientHeight_;
+
+#pragma endregion

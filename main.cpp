@@ -1,8 +1,8 @@
-#include "Project/Game/GameManager.h"
+#include "GameManager.h"
 
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
-	GameManager* gameManager = new GameManager();
-	gameManager->run();
-	delete gameManager;
+// Windowsアプリでのエントリーポイント(main関数)
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+	std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>();
+	gameManager->Run();
 	return 0;
 }

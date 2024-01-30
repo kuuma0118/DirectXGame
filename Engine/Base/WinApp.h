@@ -1,77 +1,40 @@
 #pragma once
 #include <Windows.h>
-#include <cstdint>
-#include "Engine/Externals/imgui/imgui_impl_win32.h"
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+#include <stdint.h>
+#include <string>
+#include <d3d12.h>
 
-/// <summary>
-/// ウィンドウズアプリケーション
-/// </summary>
-class WinApp {
-public:
-	//ウィンドウサイズ
-	static const int32_t kClientWidth = 1280;
-	static const int32_t kClientHeight = 720;
-
-	/// <summary>
-	/// シングルトンインスタンスの取得
-	/// </summary>
-	/// <returns></returns>
+class WinApp
+{
+public: // メンバ関数
 	static WinApp* GetInstance();
 
-	/// <summary>
-	/// ウィンドウプロシージャ
-	/// </summary>
-	/// <param name="hwnd"></param>
-	/// <param name="msg"></param>
-	/// <param name="wparam"></param>
-	/// <param name="lparam"></param>
-	/// <returns></returns>
+	HINSTANCE GetWc() { return wc_.hInstance; }
+
+	HWND GetHwnd() { return hwnd_; }
+
+	// ウィンドウプロシージャ
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-	/// <summary>
-	/// ゲームウィンドウの作成
-	/// </summary>
-	/// <param name="title"></param>
-	/// <param name="clientWidth"></param>
-	/// <param name="clientHeight"></param>
-	void CreateGameWindow(const wchar_t* title, int32_t clientWidth, int32_t clientHeight);
+	// ウィンドウの生成
+	void CreateGameWindow(const wchar_t* title, int32_t kClientWidth, int32_t kClientHeight);
 
-	/// <summary>
-	/// ゲームウィンドウを閉じる
-	/// </summary>
-	void CloseGameWindow();
+	// デバッグレイヤ
+	void DebugLayer();
 
-	/// <summary>
-	/// メッセージの処理
-	/// </summary>
-	/// <returns></returns>
-	bool ProcessMessage();
+	// Windowsの初期化
+	void Initialize(const wchar_t* title, int32_t kClientWidth, int32_t kClientHeight);
 
-	/// <summary>
-	/// ウィンドウハンドルの取得
-	/// </summary>
-	/// <returns></returns>
-	HWND GetHwnd() const { return hwnd_; };
+	// 出力ウィンドウに文字を出す
+	static void Log(const std::string& message);
 
-	/// <summary>
-	/// インスタンスハンドルの取得
-	/// </summary>
-	/// <returns></returns>
-	HINSTANCE GetHInstance() { return wc_.hInstance; };
+public: // メンバ変数
+	// ウィンドウクラス登録用
+	WNDCLASS wc_;
+	// クライアント領域
+	static int32_t kClientWidth_;
+	static int32_t kClientHeight_;
 
-private:
-	WinApp() = default;
-	~WinApp() = default;
-	WinApp(const WinApp&) = delete;
-	const WinApp& operator=(const WinApp&) = delete;
-
-private:
-	//ウィンドウクラス
-	WNDCLASS wc_{};
-	//ウィンドウサイズ
-	RECT wrc_{};
-	//ウィンドウハンドル
-	HWND hwnd_{};
-
+	// ウィンドウを生成
+	HWND hwnd_;
 };
