@@ -3,8 +3,7 @@
 
 class Enemy;
 
-// 離脱フェーズのクラス
-class EnemyStateLeave : public IEnemyState {
+class EnemyStateLv : public IEnemyState {
 public:
 		// 初期化
 	void Initialize(Enemy* enemy);

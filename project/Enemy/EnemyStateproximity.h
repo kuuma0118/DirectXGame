@@ -5,10 +5,10 @@
 
 class Enemy; // 前方宣言
 
-// 接近フェーズのクラス
-class EnemyStateApproach : public IEnemyState {
+
+class EnemyStateproximity : public IEnemyState {
 public:
-	~EnemyStateApproach();
+	~EnemyStateproximity();
 
 	/// <summary>
 	/// 弾を発射してタイマーをリセット

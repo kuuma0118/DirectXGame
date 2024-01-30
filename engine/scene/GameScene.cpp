@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 
 	// 初期位置
-	Vector3 playerPosition(0, -2, 10);
+	Vector3 playerPosition(0, 0, 10);
 	// 自キャラの初期化
 	player_->Initialize(UVCHEKER, playerPosition);
 	player_->SetGameScene(this);
@@ -70,9 +70,6 @@ void GameScene::Update() {
 	// enemyの更新
 	for (Enemy* enemy : enemy_) {
 		enemy->Update();
-		if (enemy->IsDead()) {
-			SpawnParticles(enemy->GetEnemyPos());
-		}
 	}
 	// 敵の削除
 	enemy_.remove_if([](Enemy* enemy) {
@@ -101,9 +98,6 @@ void GameScene::Update() {
 	// 天球
 	skydome_->Update();
 
-	for (Particles* particles : particles_) {
-		particles->Update();
-	}
 
 	// 当たり判定を必要とするObjectをまとめてセットする
 	collisionManager_->SetGameObject(player_, enemy_, enemyBullets_, playerBullets_);
@@ -158,10 +152,6 @@ void GameScene::Draw() {
 	// 2Dレティクル
 	player_->DrawUI();
 
-	for (Particles* particles : particles_) {
-		particles->Draw(viewProjection_, PARTICLE);
-	}
-
 	// UI
 	for (int i = 0; i < 2; i++) {
 		UI_[i]->Draw();
@@ -191,17 +181,6 @@ void GameScene::SpawnEnemy(Vector3 pos) {
 	enemy_.push_back(enemy);
 }
 
-void GameScene::SpawnParticles(Vector3 pos) {
-	Particles* particles = new Particles();
-
-	particles->SetEmitterPos(pos);
-	// 初期化
-	particles->Initialize();
-
-	// リストに登録
-	particles_.push_back(particles);
-}
-
 void GameScene::LoadEnemyPopData() {
 	// ファイルを開く
 	std::ifstream file;
@@ -228,9 +207,7 @@ void GameScene::UpdateEnemyPopCommands() {
 	// 1桁分の文字列を入れる変数
 	std::string line;
 
-	// コマンド実行ループ
 	while (getline(enemyPopCommands_, line)) {
-		// 1桁の文字列をストリームに変換して解析しやすくする
 		std::istringstream line_stream(line);
 
 		std::string word;

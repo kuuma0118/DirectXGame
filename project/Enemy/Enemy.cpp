@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include "EnemyStateApproach.h"
+#include "EnemyStateproximity.h"
 #include "EnemyStateLeave.h"
 
 #include "Player.h"
@@ -18,7 +18,7 @@
 #include <stdio.h>
 
 Enemy::Enemy() {
-	state_ = new EnemyStateApproach();
+	state_ = new EnemyStateproximity();
 }
 
 Enemy::~Enemy() {

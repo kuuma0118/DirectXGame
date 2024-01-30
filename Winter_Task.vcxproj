@@ -116,7 +116,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClCompile Include="engine\Manager\TextureManager.cpp" />
     <ClCompile Include="engine\math\Lerp.cpp" />
     <ClCompile Include="engine\math\Matrix4x4.cpp" />
-    <ClCompile Include="engine\particle\Particles.cpp" />
     <ClCompile Include="engine\utility\TimedCall.cpp" />
     <ClCompile Include="externals\ImGui\imgui.cpp" />
     <ClCompile Include="externals\ImGui\imgui_demo.cpp" />
@@ -138,14 +137,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClCompile Include="engine\scene\TitleScene.cpp" />
     <ClCompile Include="engine\utility\ConvertString.cpp" />
     <ClCompile Include="engine\utility\GlobalVariables.cpp" />
-    <ClCompile Include="engine\postProcess\PostEffect.cpp" />
     <ClCompile Include="engine\Manager\ModelManager.cpp" />
     <ClCompile Include="project\Collision\Collider.cpp" />
     <ClCompile Include="project\Collision\CollisionConfig.cpp" />
     <ClCompile Include="project\Collision\CollisionManager.cpp" />
     <ClCompile Include="project\Enemy\Enemy.cpp" />
     <ClCompile Include="project\Enemy\EnemyBullet.cpp" />
-    <ClCompile Include="project\Enemy\EnemyStateApproach.cpp" />
+    <ClCompile Include="project\Enemy\EnemyStateproximity.cpp" />
     <ClCompile Include="project\Enemy\EnemyStateLeave.cpp" />
     <ClCompile Include="project\Player\Player.cpp" />
     <ClCompile Include="project\Player\PlayerBullet.cpp" />
@@ -175,7 +173,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClInclude Include="engine\math\Vector2.h" />
     <ClInclude Include="engine\math\Vector3.h" />
     <ClInclude Include="engine\math\Vector4.h" />
-    <ClInclude Include="engine\particle\Particles.h" />
     <ClInclude Include="engine\utility\TimedCall.h" />
     <ClInclude Include="externals\ImGui\imconfig.h" />
     <ClInclude Include="externals\ImGui\imgui.h" />
@@ -196,14 +193,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClInclude Include="engine\scene\TitleScene.h" />
     <ClInclude Include="engine\utility\ConvertString.h" />
     <ClInclude Include="engine\utility\GlobalVariables.h" />
-    <ClInclude Include="engine\postProcess\PostEffect.h" />
     <ClInclude Include="engine\Manager\ModelManager.h" />
     <ClInclude Include="project\Collision\Collider.h" />
     <ClInclude Include="project\Collision\CollisionConfig.h" />
     <ClInclude Include="project\Collision\CollisionManager.h" />
     <ClInclude Include="project\Enemy\Enemy.h" />
     <ClInclude Include="project\Enemy\EnemyBullet.h" />
-    <ClInclude Include="project\Enemy\EnemyStateApproach.h" />
+    <ClInclude Include="project\Enemy\EnemyStateproximity.h" />
     <ClInclude Include="project\Enemy\EnemyStateLeave.h" />
     <ClInclude Include="project\Enemy\IEnemyState.h" />
     <ClInclude Include="project\Player\Player.h" />

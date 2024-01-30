@@ -1,28 +1,28 @@
-#include "EnemyStateApproach.h"
+#include "EnemyStateproximity.h"
 #include "EnemyStateLeave.h"
 #include "Enemy.h"
 #include "MathStructs.h"
 
-EnemyStateApproach::~EnemyStateApproach() {
+EnemyStateproximity::~EnemyStateproximity() {
 	for (TimedCall* timedCall : timedCalls_) {
 		delete timedCall;
 	}
 }
 
-void EnemyStateApproach::FireAndResetTimer() {
+void EnemyStateproximity::FireAndResetTimer() {
 	// 弾を発射する
 	enemy_->Fire();
 	// 発射タイマーをセットする
 	timedCalls_.push_back(
-		new TimedCall(std::bind(&EnemyStateApproach::FireAndResetTimer, this), kFireInterval));
+		new TimedCall(std::bind(&EnemyStateproximity::FireAndResetTimer, this), kFireInterval));
 }
 
-void EnemyStateApproach::Initialize(Enemy* enemy) {
+void EnemyStateproximity::Initialize(Enemy* enemy) {
 	enemy_ = enemy;
 	FireAndResetTimer();
 }
 
-void EnemyStateApproach::Update(Enemy* enemy) {
+void EnemyStateproximity::Update(Enemy* enemy) {
 	// 移動速度
 	const Vector3 kMoveSpeed = { 0, 0, -0.10f };
 
@@ -45,6 +45,6 @@ void EnemyStateApproach::Update(Enemy* enemy) {
 	// 既定の位置に到達したら離脱
 	if (enemy->GetEnemyPos().z < 60.0f) {
 		timedCalls_.clear();
-		enemy->ChangeState(new EnemyStateLeave());
+		enemy->ChangeState(new EnemyStateLv());
 	}
 }

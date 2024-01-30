@@ -6,7 +6,6 @@
 // User
 #include "Model.h"
 #include "ViewProjection.h"
-#include "Particles.h"
 #include "Player.h"
 #include "PlayerBullet.h"
 #include "Enemy.h"
@@ -52,8 +51,6 @@ public:
 	// 敵を発生させる
 	void SpawnEnemy(Vector3 pos);
 
-	void SpawnParticles(Vector3 pos);
-
 	// CSVを読み込む
 	void LoadEnemyPopData();
 
@@ -91,8 +88,6 @@ private:
 	Skydome* skydome_ = nullptr;
 	// カメラレール
 	RailCamera* railCamera_ = nullptr;
-	// パーティクル
-	std::list<Particles*> particles_;
 
 	// 敵の発生時間や座標などのCSVファイル
 	std::stringstream enemyPopCommands_;

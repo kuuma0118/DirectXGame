@@ -85,12 +85,6 @@
     <ClCompile Include="externals\ImGui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="engine\particle\Particles.cpp">
-      <Filter>engine\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\postProcess\PostEffect.cpp">
-      <Filter>engine\postProcess</Filter>
-    </ClCompile>
     <ClCompile Include="engine\primitive\Sphere.cpp">
       <Filter>engine\primitive</Filter>
     </ClCompile>
@@ -139,7 +133,7 @@
     <ClCompile Include="project\Enemy\EnemyBullet.cpp">
       <Filter>project\enemy</Filter>
     </ClCompile>
-    <ClCompile Include="project\Enemy\EnemyStateApproach.cpp">
+    <ClCompile Include="project\Enemy\EnemyStateproximity.cpp">
       <Filter>project\enemy</Filter>
     </ClCompile>
     <ClCompile Include="project\Enemy\EnemyStateLeave.cpp">
@@ -249,12 +243,6 @@
     <ClInclude Include="externals\ImGui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="engine\particle\Particles.h">
-      <Filter>engine\particle</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\postProcess\PostEffect.h">
-      <Filter>engine\postProcess</Filter>
-    </ClInclude>
     <ClInclude Include="engine\primitive\Sphere.h">
       <Filter>engine\primitive</Filter>
     </ClInclude>
@@ -309,7 +297,7 @@
     <ClInclude Include="project\Enemy\EnemyBullet.h">
       <Filter>project\enemy</Filter>
     </ClInclude>
-    <ClInclude Include="project\Enemy\EnemyStateApproach.h">
+    <ClInclude Include="project\Enemy\EnemyStateproximity.h">
       <Filter>project\enemy</Filter>
     </ClInclude>
     <ClInclude Include="project\Enemy\EnemyStateLeave.h">
@@ -381,12 +369,6 @@
     </Filter>
     <Filter Include="engine\components\light">
       <UniqueIdentifier>{b52e057a-7160-425c-a69f-91991634e7e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="engine\particle">
-      <UniqueIdentifier>{976c461e-25cb-4161-a01c-fcd8b3469f35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="engine\postProcess">
-      <UniqueIdentifier>{44e9620c-d138-453c-935e-c1f4057975ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="engine\utility">
       <UniqueIdentifier>{03034cb8-0e11-418d-ac6e-b9cff1e777fe}</UniqueIdentifier>
